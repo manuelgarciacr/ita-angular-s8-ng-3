@@ -1,18 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbCollapseModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgOptimizedImage } from '@angular/common';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-root',
     standalone: true,
     imports: [
+        CommonModule,
         RouterModule, // Adds directives and providers for in-app navigation among views
-        CommonModule, RouterOutlet, NgbCollapseModule, NgbNavModule, RouterLink],
+        RouterOutlet,
+        RouterLink,
+        NgbCollapseModule,
+        NgbNavModule,
+        NgOptimizedImage,
+    ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = 'IT Academy Sprint 8';
     isMenuCollapsed = true;
+    url = 'https://swapi.dev/api';
+    resp: Observable<HttpResponse<Object>>;
+
+    constructor(private http: HttpClient) {
+        this.resp = this.http.get(`${this.url}/starships`, {
+            observe: 'response',
+            responseType: 'json',
+        });
+    }
+
+    ngOnInit(): void {
+        this.resp.subscribe(data => console.log(data))
+    }
 }
