@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+// Tabs
+// .nav-tabs .nav-link {
+//     border: none;
+//     padding-left: 3rem;
+//     padding-right: 3rem;
+// }
+
+$darkgray: #202121;
+$black: #0a0b0b;
+
+body {
+    background-color: $black;
+}
+
+.navbar-nav {
+    background-color: $black;
+    border-bottom: 1px solid $darkgray;
+    border-top: 1px solid $darkgray;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .nav-item {
+        border-left: 1px solid $darkgray;
+        &:last-child {
+            border-right: 1px solid $darkgray;
+        }
+        &:has(.nav-link.active) {
+            border-bottom: 2px solid $primary;
+        }
+    }
+}
