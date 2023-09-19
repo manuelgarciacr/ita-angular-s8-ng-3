@@ -5,7 +5,7 @@ import {
     HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, retry, retryWhen, throwError, timer } from 'rxjs';
+import { Observable, catchError, retry, throwError, timer } from 'rxjs';
 import { ISwapiResp } from 'src/model/ISwapiResp';
 
 const httpOptions = {

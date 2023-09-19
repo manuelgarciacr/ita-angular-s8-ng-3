@@ -1,8 +1,6 @@
-<ul>
-    <li *ngFor = "let starship of starships">
-        <div>
-            <p>{{starship.name}}</p>
-            <p>{{starship.model}}</p>
-        </div>
-    </li>
-</ul>
+<div *ngFor="let starship of starships" class="card mx-auto w-75 my-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ starship.name }}</h5>
+        <p class="card-text">{{ starship.model }}</p>
+    </div>
+</div>
