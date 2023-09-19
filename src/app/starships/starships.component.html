@@ -1,1 +1,8 @@
-<p>starships works!</p>
+<ul>
+    <li *ngFor = "let starship of starships">
+        <div>
+            <p>{{starship.name}}</p>
+            <p>{{starship.model}}</p>
+        </div>
+    </li>
+</ul>
