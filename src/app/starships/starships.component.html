@@ -1,4 +1,4 @@
-<div *ngFor="let starship of starships" class="card mx-auto w-75 my-3">
+<div *ngFor="let starship of starships" (click)="onClick(starship.url)" class="card mx-auto w-75 my-3">
     <div class="card-body">
         <h5 class="card-title">{{ starship.name }}</h5>
         <p class="card-text">{{ starship.model }}</p>
