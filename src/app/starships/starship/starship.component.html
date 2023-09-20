@@ -1,1 +1,36 @@
-<p>starship works! {{ url }}</p>
+<div>
+    <div class="modal-header">
+        <h5 class="col-10 offset-1 text-center modal-title">{{ starship?.name?.toUpperCase()}}</h5>
+        <button type="button" class="col-1 btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-10 offset-1">
+            <img src="https://starwars-visualguide.com/assets/img/starships/10.jpg" class="d-block mx-auto" priority alt="Star Wars Logo">
+        </div>
+        <div class="col-10 offset-1 mt-3 text-center">
+            <p>MODEL: <span>{{starship?.model?.toUpperCase()}}</span></p>
+            <p>STARSHIP CLASS: <span>{{starship?.starship_class?.toUpperCase()}}</span></p>
+            <p>MANUFACTURER: <span>{{starship?.manufacturer?.toUpperCase()}}</span></p>
+            <p>COST: <span>{{starship?.cost_in_credits?.toUpperCase()}} CREDITS</span></p>
+        </div>
+        <div class="mt-3 row">
+            <div class="col-5 offset-1">
+                <p>CREW: <span>{{starship?.crew}}</span></p>
+                <p>PASSENGER CAPACITY: <span>{{starship?.passengers}}</span></p>
+                <p>CARGO CAPACITY: <span>{{starship?.cargo_capacity}} TONS</span></p>
+                <p>CONSUMABLES: <span>{{starship?.consumables?.toUpperCase()}}</span></p>
+            </div>
+            <div class="col-5">
+                <p>LENGTH: <span>{{starship?.length}} METERS</span></p>
+                <p>MAXIMUM ATMOSPHERING SPEED: <span>{{starship?.max_atmosphering_speed}} KM/H</span></p>
+                <p>HYPERDRIVE RATING: <span>{{starship?.hyperdrive_rating}}</span></p>
+                <p>MAXIMUM SPEED IN REALSPACE: <span>{{starship?.MGLT}} MGLT</span></p>
+            </div>
+        </div>
+        <div class="mt-3 row">
+            <div class="col-5 offset-1">
+                <p>PILOTS:</p>
+            </div>
+        </div>
+    </div>
+</div>

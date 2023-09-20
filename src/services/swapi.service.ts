@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, retry, throwError, timer } from 'rxjs';
+import { IStarship } from 'src/model/IStarship';
 import { ISwapiResp } from 'src/model/ISwapiResp';
 
 const httpOptions = {
@@ -29,10 +30,22 @@ export class SwapiService {
 
     /** GET starships from the server */
     getStarships(): Observable<HttpResponse<ISwapiResp>> {
-        return this.http.get<ISwapiResp>(this.url, httpOptions).pipe(
-            retry({ count: 2, delay: this.shouldRetry }),
-            catchError(this.handleError)
-        );
+        return this.http
+            .get<ISwapiResp>(this.url, httpOptions)
+            .pipe(
+                retry({ count: 2, delay: this.shouldRetry }),
+                catchError(this.handleError)
+            );
+    }
+
+    /** GET starship by url */
+    getStarshipByUrl(url: string): Observable<HttpResponse<IStarship>> {
+        return this.http
+            .get<IStarship>(url, httpOptions)
+            .pipe(
+                retry({ count: 2, delay: this.shouldRetry }),
+                catchError(this.handleError)
+            );
     }
 
     // A custom method to check should retry a request or not
