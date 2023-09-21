@@ -5,9 +5,10 @@ import {
     HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, retry, throwError, timer } from 'rxjs';
+import { Observable, catchError, of, retry, timer } from 'rxjs';
 import { IStarship } from 'src/model/IStarship';
 import { ISwapiResp } from 'src/model/ISwapiResp';
+import { HandleError, HttpErrorHandler } from './http-error-handler.service';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -20,13 +21,18 @@ const httpOptions = {
     responseType: 'json' as const,
     withCredentials: false,
 };
+const emptyResp = new HttpResponse<IStarship>({});
 
 @Injectable({
     providedIn: 'root',
 })
 export class SwapiService {
-    url = 'https://swapi.dev/api/starships';
-    constructor(private http: HttpClient) {}
+    url = 'https://swapi.dev/api/starships'.toLowerCase();
+    private handleError: HandleError;
+
+    constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
+        this.handleError = httpErrorHandler.createHandleError('SwapiService');
+    }
 
     /** GET starships from the server */
     getStarships(): Observable<HttpResponse<ISwapiResp>> {
@@ -34,17 +40,20 @@ export class SwapiService {
             .get<ISwapiResp>(this.url, httpOptions)
             .pipe(
                 retry({ count: 2, delay: this.shouldRetry }),
-                catchError(this.handleError)
+                catchError(this.handleError('getStarships', new HttpResponse<ISwapiResp>({})))
             );
     }
 
     /** GET starship by url */
-    getStarshipByUrl(url: string): Observable<HttpResponse<IStarship>> {
+    getStarshipByUrl(urlParm: string): Observable<HttpResponse<IStarship>> {
+        if (!this.checkUrl('getStarshipByUrl', urlParm))
+            return of(emptyResp);
+
         return this.http
-            .get<IStarship>(url, httpOptions)
+            .get<IStarship>(urlParm, httpOptions)
             .pipe(
                 retry({ count: 2, delay: this.shouldRetry }),
-                catchError(this.handleError)
+                catchError(this.handleError("getStarshipByUrl", emptyResp))
             );
     }
 
@@ -57,21 +66,32 @@ export class SwapiService {
         throw error;
     }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.status === 0) {
-            // A client-side or network error occurred. Handle it accordingly.
-            console.error('An error occurred:', error.error);
-        } else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong.
-            console.error(
-                `Backend returned code ${error.status}, body was: `,
-                error.error
-            );
-        }
-        // Return an observable with a user-facing error message.
-        return throwError(
-            () => new Error('Something bad happened; please try again later.')
-        );
+    checkUrl(operation: string, urlParm: string): boolean {
+        const isString = typeof urlParm == 'string';
+        const lowerCase = isString ? urlParm.toLowerCase() : "";
+
+        const isOk = isString && lowerCase.startsWith(this.url);
+
+        if (!isOk)
+            console.log(`SwapiService: ${operation} failed: Bad URL: "${urlParm}"`);
+
+        return isOk
     }
+    // private handleError(error: HttpErrorResponse, fn: string) {
+    //     if (error.status === 0) {
+    //         // A client-side or network error occurred. Handle it accordingly.
+    //         console.error('An error occurred:', error.error);
+    //     } else {
+    //         // The backend returned an unsuccessful response code.
+    //         // The response body may contain clues as to what went wrong.
+    //         console.error(
+    //             `Backend returned code ${error.status}, body was: `,
+    //             error.error
+    //         );
+    //     }
+    //     // Return an observable with a user-facing error message.
+    //     return throwError(
+    //         () => new Error(`${fn}: Something bad happened; please try again later.`)
+    //     );
+    // }
 }

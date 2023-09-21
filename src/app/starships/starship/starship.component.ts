@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { IStarship } from "src/model/IStarship";
 import { SwapiService } from "src/services/swapi.service";
-import { NgOptimizedImage } from "@angular/common";
+//import { NgOptimizedImage } from "@angular/common";
 
 @Component({
     selector: "app-starship",
@@ -12,7 +12,7 @@ import { NgOptimizedImage } from "@angular/common";
     //imports: [NgOptimizedImage],
     templateUrl: "./starship.component.html",
     styles: [
-        "img {width: 100%}",
+        "img {width: 100%; max-width: 600px}",
         "span {color: #999; margin-left: .4rem}",
         "p {margin-top: 0; margin-bottom: 0}"],
 })
@@ -32,8 +32,11 @@ export class StarshipComponent implements OnInit {
 
     getStarship(): void {
         this.swapiService.getStarshipByUrl(this.url).subscribe(resp => {
-            const arr = this.url.split("/");
+            this.starship = resp.body;
+
+            const arr = this.starship?.url.split('/') || [];
             let name = arr.pop();
+
             if (name == "")
                 name = arr.pop();
             console.log("RESP", this.url, "*", arr, "*", name)
