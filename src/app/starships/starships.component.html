@@ -1,6 +1,23 @@
-<div *ngFor="let starship of starships" (click)="onClick(starship.url)" class="card mx-auto w-75 my-3">
-    <div class="card-body">
-        <h5 class="card-title">{{ starship.name }}</h5>
-        <p class="card-text">{{ starship.model }}</p>
+<div infiniteScroll [infiniteScrollDistance]="2" (scrolled)="onScroll()">
+    <div
+        *ngFor="let starship of starships"
+        (click)="onClick(starship.url)"
+        class="card mx-auto w-75 my-3"
+    >
+        <div class="card-body">
+            <h5 class="card-title">{{ starship.name }}</h5>
+            <p class="card-text">{{ starship.model }}</p>
+        </div>
     </div>
+    <button
+        [ngClass]="'no-hidden'"
+        *ngIf="showGoUpButton"
+        class="btn btn-dark"
+        (click)="scrollTop()"
+    >
+        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ loading ? "Loading..." :
+            (showGoUpButton ? "GO UP" : "")
+        }}
+    </button>
 </div>

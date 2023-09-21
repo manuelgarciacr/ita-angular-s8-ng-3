@@ -21,32 +21,46 @@ const httpOptions = {
     responseType: 'json' as const,
     withCredentials: false,
 };
-const emptyResp = new HttpResponse<IStarship>({});
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: "root",
 })
 export class SwapiService {
-    url = 'https://swapi.dev/api/starships'.toLowerCase();
+    url = "https://swapi.dev/api/starships".toLowerCase();
     private handleError: HandleError;
 
     constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
-        this.handleError = httpErrorHandler.createHandleError('SwapiService');
+        this.handleError = httpErrorHandler.createHandleError("SwapiService");
     }
 
-    /** GET starships from the server */
-    getStarships(): Observable<HttpResponse<ISwapiResp>> {
+    /** GET starships from the server by URL */
+    getStarshipsByUrl(urlParm: string | null): Observable<HttpResponse<ISwapiResp>> {
+        const emptyResp = new HttpResponse<ISwapiResp>({});
+
+        if (urlParm && !this.checkUrl("getStarshipsByUrl", urlParm))
+            return of(emptyResp);
+
+        if (urlParm == null)
+            urlParm = this.url;
+
         return this.http
-            .get<ISwapiResp>(this.url, httpOptions)
+            .get<ISwapiResp>(urlParm, httpOptions)
             .pipe(
                 retry({ count: 2, delay: this.shouldRetry }),
-                catchError(this.handleError('getStarships', new HttpResponse<ISwapiResp>({})))
+                catchError(
+                    this.handleError(
+                        "getStarships",
+                        new HttpResponse<ISwapiResp>({})
+                    )
+                )
             );
     }
 
-    /** GET starship by url */
+    /** GET starship from the server by url */
     getStarshipByUrl(urlParm: string): Observable<HttpResponse<IStarship>> {
-        if (!this.checkUrl('getStarshipByUrl', urlParm))
+        const emptyResp = new HttpResponse<IStarship>({});
+
+        if (!this.checkUrl("getStarshipByUrl", urlParm))
             return of(emptyResp);
 
         return this.http
@@ -67,14 +81,16 @@ export class SwapiService {
     }
 
     checkUrl(operation: string, urlParm: string): boolean {
-        const isString = typeof urlParm == 'string';
+        const isString = typeof urlParm == "string";
         const lowerCase = isString ? urlParm.toLowerCase() : "";
 
         const isOk = isString && lowerCase.startsWith(this.url);
 
         if (!isOk)
-            console.log(`SwapiService: ${operation} failed: Bad URL: "${urlParm}"`);
+            console.log(
+                `SwapiService: ${operation} failed: Bad URL: "${urlParm}"`
+            );
 
-        return isOk
+        return isOk;
     }
 }
