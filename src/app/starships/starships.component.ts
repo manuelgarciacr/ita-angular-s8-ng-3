@@ -20,9 +20,7 @@ export class StarshipsComponent implements OnInit {
     constructor(
         private swapiService: SwapiService,
         private modalService: NgbModal
-    ) {
-        //this.getStarships();
-    }
+    ) {}
 
     ngOnInit(): void {
         this.getStarships();

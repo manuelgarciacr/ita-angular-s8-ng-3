@@ -5,7 +5,7 @@
     </div>
     <div class="modal-body">
         <div class="col-10 offset-1">
-            <img src="https://starwars-visualguide.com/assets/img/starships/10.jpg" class="d-block mx-auto" priority alt="Star Wars Logo">
+            <img [src]="jpg" (error)="imageError()" class="d-block mx-auto" priority alt="Star Wars Logo">
         </div>
         <div class="col-10 offset-1 mt-3 text-center">
             <p>MODEL: <span>{{starship?.model?.toUpperCase()}}</span></p>
