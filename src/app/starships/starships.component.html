@@ -10,14 +10,14 @@
         </div>
     </div>
     <button
-        [ngClass]="'no-hidden'"
-        *ngIf="showGoUpButton"
-        class="btn btn-dark"
+        *ngIf="showGoUpButton || loading"
+        class="btn no-hidden"
+        [class.btn-danger]="loading"
+        [class.btn-dark]="!loading"
         (click)="scrollTop()"
     >
-        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        {{ loading ? "Loading..." :
-            (showGoUpButton ? "GO UP" : "")
-        }}
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"
+            role="status" aria-hidden="true"></span>
+        {{ loading ? "Loading..." : "GO UP"}}
     </button>
 </div>

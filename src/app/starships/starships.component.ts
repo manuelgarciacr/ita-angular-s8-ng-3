@@ -1,9 +1,7 @@
 import { Component, HostListener, OnInit } from "@angular/core";
 import { NgFor, NgClass, NgIf } from "@angular/common";
 import { SwapiService } from "src/services/swapi.service";
-import { HttpResponse } from "@angular/common/http";
 import { IStarship } from "src/model/IStarship";
-import { ISwapiResp } from "src/model/ISwapiResp";
 import { StarshipComponent } from "./starship/starship.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import {InfiniteScrollModule} from "ngx-infinite-scroll"
@@ -27,7 +25,6 @@ const hideScrollHeight = 200;
     ],
 })
 export class StarshipsComponent implements OnInit {
-    //private resp?: HttpResponse<ISwapiResp>;
     private nextPage: string | null = null;
     starships: IStarship[] = [];
     showGoUpButton = false;
@@ -46,7 +43,6 @@ export class StarshipsComponent implements OnInit {
         this.loading = true;
         this.swapiService.getStarshipsByUrl(this.nextPage).subscribe(resp => {
             this.starships.push(...(resp.body ? resp.body.results : []));
-            //this.resp = resp;
             this.nextPage = resp.body?.next || null;
             this.loading = false
         });
