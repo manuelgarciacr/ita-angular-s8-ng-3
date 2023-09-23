@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptimizedImage } from '@angular/common';
 
@@ -9,6 +9,7 @@ import { NgOptimizedImage } from '@angular/common';
     imports: [
         RouterOutlet,
         RouterLink,
+        RouterLinkActive,
         NgbCollapseModule,
         NgOptimizedImage,
     ],

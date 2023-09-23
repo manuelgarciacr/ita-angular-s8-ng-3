@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&family=Roboto&display=swap');
 
 // Tabs
 // .nav-tabs .nav-link {
@@ -13,8 +13,25 @@
 $darkgray: #202121;
 $black: #0a0b0b;
 
+@include color-mode(dark) {
+    .card {
+        background-color: #151515;
+        border: 0;
+        .card-title {
+            color: #999999;
+        }
+
+        .card-text {
+            color: #757575;
+        }
+    }
+
+}
+
 body {
     background-color: $black;
+    font-family: 'PT Serif', serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .navbar-nav {
