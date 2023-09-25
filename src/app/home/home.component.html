@@ -1,1 +1,85 @@
-<p>home works!</p>
+<div
+    class="container d-flex flex-column justify-content-center align-items-center position-relative"
+>
+    <button class="position-absolute top-0 end-0 me-3"
+        (click)="setAudio()" type="button"
+        title="{{audioOn == null ? 'Play with Sound' : audioOn ? 'Sound Off' : 'Sound On'}}">
+        {{ audioOn == null ? "Play with Sound " : "" }}
+        <i class="bi bi-volume-up-fill"
+            [class.bi-volume-mute-fill]="audioOn"
+            [class.bi-volume-up-fill]="!audioOn"></i>
+    </button>
+
+    <p
+        [@aLongTime]="aLongTimeState"
+        (@aLongTime.done)="aLongTimeState = 'open'"
+        style="width: 0px"
+    >
+        A long time ago in a galaxy far, far away....
+    </p>
+
+    <img
+        [@starWarsLogo]="starWarsLogoState"
+        (@starWarsLogo.start)="playAudio($event)"
+        src="../../assets/img/Star_Wars_Logo.svg"
+        alt="Star Wars Logo"
+        style="display: none;"
+    />
+
+    <div class="d3d position-absolute">
+        <div [@starWarsCrawl]="'closed'" style="text-align: left; display: none">
+            <p  class="text-center">Episode IV</p>
+            <p  class="text-center">A NEW HOPE</p>
+            <p  style="color: transparent">BR</p>
+            <p >It is a period of civil war.</p>
+            <p >
+                Rebel&nbsp;&nbsp;spaceships,&nbsp;&nbsp;striking
+            </p>
+            <p >from a hidden base, have won</p>
+            <p >
+                their first&nbsp;&nbsp;victory against
+            </p>
+            <p >the evil Galactic Empire.</p>
+            <p style="color: transparent">BR</p>
+            <p >
+                During&nbsp;&nbsp;&nbsp;the&nbsp;&nbsp;&nbsp;battle,&nbsp;&nbsp;Rebel
+            </p>
+            <p >spies managed to steal secret</p>
+            <p >
+                plans&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;&nbsp;&nbsp;Empire's
+            </p>
+            <p >
+                ultimate&nbsp;&nbsp;weapon,&nbsp;&nbsp;the&nbsp;&nbsp;DEATH
+            </p>
+            <p >
+                STAR,&nbsp;&nbsp;&nbsp;&nbsp;an&nbsp;&nbsp;&nbsp;armored&nbsp;&nbsp;&nbsp;space
+            </p>
+            <p >
+                station with enough&nbsp;&nbsp;power to
+            </p>
+            <p >destroy an entire planet.</p>
+            <p  style="color: transparent">BR</p>
+            <p >
+                Pursued&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;the&nbsp;&nbsp;&nbsp;Empire's
+            </p>
+            <p >
+                sinister&nbsp;&nbsp;&nbsp;agents,&nbsp;&nbsp;&nbsp;Princess
+            </p>
+            <p >
+                Leia&nbsp;&nbsp;races&nbsp;&nbsp;home&nbsp;&nbsp;aboard her
+            </p>
+            <p >
+                starship,&nbsp;&nbsp;custodian&nbsp;&nbsp;of&nbsp;&nbsp;the
+            </p>
+            <p >
+                stolen&nbsp;&nbsp;plans&nbsp;&nbsp;that&nbsp;&nbsp;can save
+            </p>
+            <p >
+                her&nbsp;&nbsp;&nbsp;&nbsp;people&nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp;restore
+            </p>
+            <p >
+                freedom&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;the&nbsp;&nbsp;galaxy....
+            </p>
+        </div>
+    </div>
+</div>

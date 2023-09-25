@@ -1,7 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+$enable-negative-margins: true;
+$spacer: 1rem !default;
+$spacers: (
+    0: 0,
+    1: $spacer * .25,
+    2: $spacer * .5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 3,
+    6: $spacer * 6.5,
+    ) !default;
+
+
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif&family=Roboto&display=swap');
+@import 'node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
+$negative-spacers: if($enable-negative-margins, negativify-map($spacers), null);
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Serif&family=Roboto&family=Spline+Sans+Mono:wght@700&display=swap');
 
 // Tabs
 // .nav-tabs .nav-link {

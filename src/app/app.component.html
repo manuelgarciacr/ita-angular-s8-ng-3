@@ -26,4 +26,6 @@
 	</div>
 </nav>
 
-<router-outlet></router-outlet>
+<main [@homeTrigger]="getRouteAnimationData(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
+</main>
