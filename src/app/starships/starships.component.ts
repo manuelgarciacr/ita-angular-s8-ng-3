@@ -49,7 +49,7 @@ export class StarshipsComponent implements OnInit {
     }
 
     onClick(url: string) {
-        const modalRef = this.modalService.open(StarshipComponent);
+        const modalRef = this.modalService.open(StarshipComponent, {windowClass: "starship-modal"});
         modalRef.componentInstance.url = url;
     }
 

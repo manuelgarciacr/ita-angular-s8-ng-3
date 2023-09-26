@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptimizedImage } from '@angular/common';
+import { LoginComponent } from './login/login.component';
 
 @Component({
-    selector: 'app-root',
+    selector: "app-root",
     standalone: true,
     imports: [
         RouterOutlet,
@@ -13,11 +14,16 @@ import { NgOptimizedImage } from '@angular/common';
         NgbCollapseModule,
         NgOptimizedImage,
     ],
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-    title = 'IT Academy Sprint 8';
+    title = "IT Academy Sprint 8";
     isMenuCollapsed = true;
 
+    constructor(private modalService: NgbModal) {}
+
+    openLogin() {
+        this.modalService.open(LoginComponent, { fullscreen: true });
+    }
 }
