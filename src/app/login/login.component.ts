@@ -12,5 +12,5 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
     ],
 })
 export class LoginComponent {
-    constructor(public activeModal: NgbActiveModal) {};
+    constructor(public activeModal: NgbActiveModal) {}
 }

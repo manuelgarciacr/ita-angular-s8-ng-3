@@ -1,5 +1,5 @@
-<div class="modal-header">
-    <h4 class="modal-title">Modal title</h4>
+<div class="modal-header border-0">
+    <h4 class="modal-title"></h4>
     <div
         type="button"
         class="fs-2 close-btn"
@@ -20,15 +20,84 @@
         </svg>
     </div>
 </div>
-<div class="modal-body">
-    <p>One fine body&hellip;</p>
+<div class="col-4 offset-4 mb-3">
+    <img
+        src="../../assets/img/Star_Wars_Logo_white.svg"
+        width="180"
+        height="90"
+        class="d-block mx-auto"
+        priority
+        alt="Star Wars Logo"
+    />
 </div>
-<div class="modal-footer">
-    <button
+<div class="modal-body mx-auto bg-light text-bg-light rounded-4 p-5">
+    <form>
+        <div class="mb-4">
+            <h2><strong>Enter your email</strong></h2>
+            <p>
+                Log into your Star Wars account. If you don't have one, you will
+                be prompted to create one.
+            </p>
+        </div>
+        <div class="form-floating mb-4">
+            <input
+                type="email"
+                class="form-control border-secondary"
+                id="email"
+                placeholder="email"
+                aria-describedby="emailHelp"
+                tabindex="-1"
+            /><!-- placeholder needed for floating label-->
+            <label for="email">Email address</label>
+            <div id="emailHelp" class="form-text d-none">
+                We'll never share your email with anyone else.
+            </div>
+        </div>
+        <!-- <div class="mb-3 form-check">
+            <input
+                type="checkbox"
+                class="form-check-input"
+                id="exampleCheck1"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+                >Check me out</label
+            >
+        </div> -->
+        <hr>
+        <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4">Continue</button>
+        <h6 ><strong>Star Wars is part of The Walt Disney Family of Companies.</strong></h6>
+        <p class="text-secondary">
+            This email and password lets you seamlessly log into services and
+            experiences across The Walt Disney Family of Companies, such as
+            ESPN, Walt Disney World, Marvel, and more.
+        </p>
+        <p class="text-secondary">
+            If you’ve used your email with one of our services, please use it
+            here too.
+        </p>
+        <img src="../../assets/img/logos-star-wars.webp" alt="Logos Compañias afines Star Wars" class="my-2">
+    </form>
+</div>
+<div class="modal-footer position-absolute bottom-0 border-0 w-100">
+    <div class="float-end">
+        Foto de
+        <a
+            href="https://unsplash.com/es/@kaip?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+        >Kai Pilger</a
+        >
+        en
+        <a
+            href="https://unsplash.com/es/fotos/Ef6iL87-vOA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+            >Unsplash</a
+        >
+    </div>
+
+
+    <!-- <button
         type="button"
         class="btn btn-light"
         (click)="activeModal.close('Close click')"
     >
         Close
-    </button>
+    </button> -->
 </div>

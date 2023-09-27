@@ -1,7 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
 /* Importing Bootstrap SCSS file. */
+
+$enable-negative-margins: true;
+
 @import 'bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif&family=Roboto&display=swap');
+
+.login-modal {
+    .modal-content {
+        background-image: url('assets/img/kai-pilger-Ef6iL87-vOA-unsplash.webp');
+        background-size: cover;
+        .modal-body {
+            max-width: 580px;
+            input {
+                background: lightgray;
+                color: black
+            }
+            .form-floating>.form-control {
+                &:focus {
+                    border: none;
+                    border-bottom: 3px solid black!important;
+                    box-shadow: none;
+                }
+                &~label {
+                    color: gray;
+                    &::after {
+                        background-color: inherit;
+                    }
+                }
+            }
+            button {
+                background-color: #FADE4B;
+                color: black;
+                font-weight: bold;
+                height: 3rem;
+                &:hover {
+                    background-color: #F2D24E;
+                }
+            }
+        }
+    }
+}
 
 // Tabs
 // .nav-tabs .nav-link {

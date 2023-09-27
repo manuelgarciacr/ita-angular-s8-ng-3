@@ -24,6 +24,6 @@ export class AppComponent {
     constructor(private modalService: NgbModal) {}
 
     openLogin() {
-        this.modalService.open(LoginComponent, { fullscreen: true });
+        this.modalService.open(LoginComponent, { fullscreen: true, windowClass: "login-modal" });
     }
 }
