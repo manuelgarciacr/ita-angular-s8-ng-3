@@ -24,6 +24,11 @@ export class AppComponent {
     constructor(private modalService: NgbModal) {}
 
     openLogin() {
-        this.modalService.open(LoginComponent, { fullscreen: true, windowClass: "login-modal" });
+        const modalRef = this.modalService.open(LoginComponent, { fullscreen: true, windowClass: "login-modal" });
+        modalRef.result
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.error(err));
     }
 }

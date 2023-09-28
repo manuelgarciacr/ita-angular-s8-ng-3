@@ -31,31 +31,35 @@
     />
 </div>
 <div class="modal-body mx-auto overflow-y-visible">
-    <form [formGroup]="loginForm" class=" was-validatedbg-light text-bg-light rounded-4 p-5">
+    <form [formGroup]="signUpForm" class=" was-validatedbg-light text-bg-light rounded-4 p-5">
         <div class="mb-4">
-            <h2><strong>Enter your email</strong></h2>
+            <h2><strong>Create Your Account</strong></h2>
             <p>
-                Log into your Star Wars account. If you don't have one, you will
-                be prompted to create one.
+                Star Wars is part of The Walt Disney Family of Companies.
+                You'll be able to log into services and experiences using
+                the same email and password.
+            </p>
+            <p>
+                Enter a password to create your account with <br>
+                <strong>{{user.email}}</strong>&nbsp;<span class="text-decoration-underline cursor-pointer text-primary" (click)="closeSignup()">edit</span>
             </p>
         </div>
         <div class="form-floating mb-4">
             <input
-                type="email"
+                type="text"
                 class="form-control border-secondary"
-                id="email"
-                formControlName="email"
-                placeholder="email"
-                aria-describedby="emailHelp"
-                tabindex="-1"
+                id="firstName"
+                formControlName="firstName"
+                placeholder="First Name"
+                aria-describedby="firstNameHelp"
             /><!-- placeholder needed for floating label-->
-            <label for="email">Email address</label>
-            <div id="emailHelp" class="form-text d-none">
-                We'll never share your email with anyone else.
+            <label for="firstName">First Name</label>
+            <div id="firstNameHelp" class="form-text d-none">
+                First name.
             </div>
             <div class="text-danger text-end col-10 offset-1 col-sm-9 offset-sm-2 my-3"
-                *ngIf="loginForm.get('email')!.invalid && loginForm.get('email')!.touched">
-                {{ getError('email') | json }}
+                *ngIf="signUpForm.get('firstName')!.invalid && signUpForm.get('firstName')!.touched">
+                {{ getError('firstName') | json }}
             </div>
         </div>
         <!-- <div class="mb-3 form-check">
@@ -69,8 +73,8 @@
             >
         </div> -->
         <hr>
-        <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4" (click)="login()"
-                [class.disabled]="!loginForm.valid">Continue</button>
+        <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4" (click)="signUp()"
+                [class.disabled]="!signUpForm.valid">Continue</button>
         <h6 ><strong>Star Wars is part of The Walt Disney Family of Companies.</strong></h6>
         <p class="text-secondary">
             This email and password lets you seamlessly log into services and

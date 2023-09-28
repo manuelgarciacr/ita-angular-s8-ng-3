@@ -2,9 +2,17 @@
 /* Importing Bootstrap SCSS file. */
 
 $enable-negative-margins: true;
-
+//Generate utilites for Cursor
+$utilities: (
+    ) !default;
+$utilities: map-merge($utilities,
+    ("cursor": (property: cursor,
+        values: auto default pointer wait text move help not-allowed),
+    )
+);
 @import 'bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif&family=Roboto&display=swap');
+
 
 .login-modal {
     .modal-content {
