@@ -35,5 +35,13 @@
                 [class.offset-1]="even"></app-pilot>
 
         </div>
+        <div class="mt-3 row">
+            <p class="mb-3">FILMS:</p>
+            <app-film *ngFor="let film of films; let even = even"
+                [film]="film"
+                class="col-5 mb-3"
+                [class.offset-1]="even"></app-film>
+
+        </div>
     </div>
 </div>

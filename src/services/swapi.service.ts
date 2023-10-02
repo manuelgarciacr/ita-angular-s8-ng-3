@@ -10,6 +10,7 @@ import { IStarship } from 'src/model/IStarship';
 import { ISwapiResp } from 'src/model/ISwapiResp';
 import { HandleError, HttpErrorHandler } from './http-error-handler.service';
 import { IPilot } from 'src/model/IPilot';
+import { IFilm } from 'src/model/IFilm';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -64,7 +65,8 @@ export class SwapiService {
         const emptyResp = new HttpResponse<IStarship>({});
         const endPoint = "starships";
 
-        if (!this.checkUrl("getStarshipByUrl", endPoint, urlParm)) return of(emptyResp);
+        if (!this.checkUrl("getStarshipByUrl", endPoint, urlParm))
+            return of(emptyResp);
 
         return this.http
             .get<IStarship>(urlParm, httpOptions)
@@ -79,13 +81,30 @@ export class SwapiService {
         const emptyResp = new HttpResponse<IPilot>({});
         const endPoint = "people";
 
-        if (!this.checkUrl("getPilotByUrl", endPoint, urlParm)) return of(emptyResp);
+        if (!this.checkUrl("getPilotByUrl", endPoint, urlParm))
+            return of(emptyResp);
 
         return this.http
             .get<IPilot>(urlParm, httpOptions)
             .pipe(
                 retry({ count: 2, delay: this.shouldRetry }),
                 catchError(this.handleError("getPilotByUrl", emptyResp))
+            );
+    }
+
+    /** GET film from the server by url */
+    getFilmByUrl(urlParm: string): Observable<HttpResponse<IFilm>> {
+        const emptyResp = new HttpResponse<IFilm>({});
+        const endPoint = "films";
+
+        if (!this.checkUrl("getFilmByUrl", endPoint, urlParm))
+            return of(emptyResp);
+
+        return this.http
+            .get<IFilm>(urlParm, httpOptions)
+            .pipe(
+                retry({ count: 2, delay: this.shouldRetry }),
+                catchError(this.handleError("getFilmByUrl", emptyResp))
             );
     }
 
@@ -102,7 +121,8 @@ export class SwapiService {
         const isString = typeof urlParm == "string";
         const lowerCase = isString ? urlParm.toLowerCase() : "";
 
-        const isOk = isString && lowerCase.startsWith(this.url + "/" + endPoint);
+        const isOk =
+            isString && lowerCase.startsWith(this.url + "/" + endPoint);
 
         if (!isOk)
             console.log(

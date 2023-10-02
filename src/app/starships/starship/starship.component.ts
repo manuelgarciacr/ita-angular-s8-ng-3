@@ -5,12 +5,14 @@ import { IStarship } from "src/model/IStarship";
 import { SwapiService } from "src/services/swapi.service";
 import { PilotComponent } from "./pilot/pilot.component";
 import { NgFor } from "@angular/common";
+import { FilmComponent } from "./film/film.component";
+import { IFilm } from "src/model/IFilm";
 
 @Component({
     selector: "app-starship",
     standalone: true,
     templateUrl: "./starship.component.html",
-    imports: [PilotComponent, NgFor],
+    imports: [PilotComponent, FilmComponent, NgFor],
     styles: [
         "img {width: 100%; max-width: 600px}",
         "p>span {color: #999; margin-left: .4rem}",
@@ -27,6 +29,7 @@ export class StarshipComponent implements OnInit {
     }
     starship: IStarship | null = null;
     pilots: IPilot[] = [];
+    films: IFilm[] = [];
     emptyJpg = "./assets/img/space600x400.webp";
     jpg = this.emptyJpg;
     jpgUrl = "https://starwars-visualguide.com/assets/img/starships/";
@@ -67,10 +70,19 @@ export class StarshipComponent implements OnInit {
 
             pilots.forEach(v => {
                 this.swapiService.getPilotByUrl(v).subscribe(resp => {
-                    const pilot = resp.body || {url: v};
-                    this.pilots.push(pilot)
-                })
-            })
+                    const pilot = resp.body || { url: v };
+                    this.pilots.push(pilot);
+                });
+            });
+
+            const films = this.starship?.films || [];
+
+            films.forEach(v => {
+                this.swapiService.getFilmByUrl(v).subscribe(resp => {
+                    const film = resp.body || { url: v };
+                    this.films.push(film);
+                });
+            });
         });
     }
 }
