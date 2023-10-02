@@ -9,6 +9,7 @@ import { Observable, catchError, of, retry, timer } from 'rxjs';
 import { IStarship } from 'src/model/IStarship';
 import { ISwapiResp } from 'src/model/ISwapiResp';
 import { HandleError, HttpErrorHandler } from './http-error-handler.service';
+import { IPilot } from 'src/model/IPilot';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -26,7 +27,7 @@ const httpOptions = {
     providedIn: "root",
 })
 export class SwapiService {
-    url = "https://swapi.dev/api/starships".toLowerCase();
+    url = "https://swapi.dev/api".toLowerCase();
     private handleError: HandleError;
 
     constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
@@ -34,14 +35,16 @@ export class SwapiService {
     }
 
     /** GET starships from the server by URL */
-    getStarshipsByUrl(urlParm: string | null): Observable<HttpResponse<ISwapiResp>> {
+    getStarshipsByUrl(
+        urlParm: string | null
+    ): Observable<HttpResponse<ISwapiResp>> {
         const emptyResp = new HttpResponse<ISwapiResp>({});
+        const endPoint = "starships";
 
-        if (urlParm && !this.checkUrl("getStarshipsByUrl", urlParm))
+        if (urlParm && !this.checkUrl("getStarshipsByUrl", endPoint, urlParm))
             return of(emptyResp);
 
-        if (urlParm == null)
-            urlParm = this.url;
+        if (urlParm == null) urlParm = this.url + "/" + endPoint;
 
         return this.http
             .get<ISwapiResp>(urlParm, httpOptions)
@@ -59,15 +62,30 @@ export class SwapiService {
     /** GET starship from the server by url */
     getStarshipByUrl(urlParm: string): Observable<HttpResponse<IStarship>> {
         const emptyResp = new HttpResponse<IStarship>({});
+        const endPoint = "starships";
 
-        if (!this.checkUrl("getStarshipByUrl", urlParm))
-            return of(emptyResp);
+        if (!this.checkUrl("getStarshipByUrl", endPoint, urlParm)) return of(emptyResp);
 
         return this.http
             .get<IStarship>(urlParm, httpOptions)
             .pipe(
                 retry({ count: 2, delay: this.shouldRetry }),
                 catchError(this.handleError("getStarshipByUrl", emptyResp))
+            );
+    }
+
+    /** GET pilot from the server by url */
+    getPilotByUrl(urlParm: string): Observable<HttpResponse<IPilot>> {
+        const emptyResp = new HttpResponse<IPilot>({});
+        const endPoint = "people";
+
+        if (!this.checkUrl("getPilotByUrl", endPoint, urlParm)) return of(emptyResp);
+
+        return this.http
+            .get<IPilot>(urlParm, httpOptions)
+            .pipe(
+                retry({ count: 2, delay: this.shouldRetry }),
+                catchError(this.handleError("getPilotByUrl", emptyResp))
             );
     }
 
@@ -80,11 +98,11 @@ export class SwapiService {
         throw error;
     }
 
-    checkUrl(operation: string, urlParm: string): boolean {
+    checkUrl(operation: string, endPoint: string, urlParm: string): boolean {
         const isString = typeof urlParm == "string";
         const lowerCase = isString ? urlParm.toLowerCase() : "";
 
-        const isOk = isString && lowerCase.startsWith(this.url);
+        const isOk = isString && lowerCase.startsWith(this.url + "/" + endPoint);
 
         if (!isOk)
             console.log(

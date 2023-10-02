@@ -1,15 +1,19 @@
 import { Component, HostBinding, Input, OnInit } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { IPilot } from "src/model/IPilot";
 import { IStarship } from "src/model/IStarship";
 import { SwapiService } from "src/services/swapi.service";
+import { PilotComponent } from "./pilot/pilot.component";
+import { NgFor } from "@angular/common";
 
 @Component({
     selector: "app-starship",
     standalone: true,
     templateUrl: "./starship.component.html",
+    imports: [PilotComponent, NgFor],
     styles: [
         "img {width: 100%; max-width: 600px}",
-        "span {color: #999; margin-left: .4rem}",
+        "p>span {color: #999; margin-left: .4rem}",
         "p {margin-top: 0; margin-bottom: 0}",
     ],
 })
@@ -22,6 +26,7 @@ export class StarshipComponent implements OnInit {
         return true;
     }
     starship: IStarship | null = null;
+    pilots: IPilot[] = [];
     emptyJpg = "./assets/img/space600x400.webp";
     jpg = this.emptyJpg;
     jpgUrl = "https://starwars-visualguide.com/assets/img/starships/";
@@ -57,7 +62,15 @@ export class StarshipComponent implements OnInit {
             this.isImage(url)
                 .then(() => (this.jpg = url))
                 .catch(() => {});
-            this.starship = resp.body;
+
+            const pilots = this.starship?.pilots || [];
+
+            pilots.forEach(v => {
+                this.swapiService.getPilotByUrl(v).subscribe(resp => {
+                    const pilot = resp.body || {url: v};
+                    this.pilots.push(pilot)
+                })
+            })
         });
     }
 }
