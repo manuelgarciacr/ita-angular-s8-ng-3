@@ -31,7 +31,7 @@
     />
 </div>
 <div class="modal-body mx-auto overflow-y-visible">
-    <form [formGroup]="signUpForm" class=" was-validatedbg-light text-bg-light rounded-4 p-5">
+    <form [formGroup]="signUpForm" class="was-validated bg-light text-bg-light rounded-4 p-5">
         <div class="mb-4">
             <h2><strong>Create Your Account</strong></h2>
             <p>
@@ -52,6 +52,7 @@
                 formControlName="firstName"
                 placeholder="First Name"
                 aria-describedby="firstNameHelp"
+                [tabindex]="tabindex"
             /><!-- placeholder needed for floating label-->
             <label for="firstName">First Name</label>
             <div id="firstNameHelp" class="form-text d-none">
@@ -62,30 +63,73 @@
                 {{ getError('firstName') | json }}
             </div>
         </div>
-        <!-- <div class="mb-3 form-check">
+        <div class="form-floating mb-4">
+            <input
+                type="text"
+                class="form-control border-secondary"
+                id="lastName"
+                formControlName="lastName"
+                placeholder="Last Name"
+                aria-describedby="lastNameHelp"
+                [tabindex]="tabindex"
+            /><!-- placeholder needed for floating label-->
+            <label for="lastName">Last Name</label>
+            <div id="lastNameHelp" class="form-text d-none">
+                Last name.
+            </div>
+            <div class="text-danger text-end col-10 offset-1 col-sm-9 offset-sm-2 my-3"
+                *ngIf="signUpForm.get('lastName')!.invalid && signUpForm.get('lastName')!.touched">
+                {{ getError('lastName') | json }}
+            </div>
+        </div>
+        <div class="form-floating input-group form-group mb-4">
+            <input
+                [attr.type]="pwdState.type[pwdState.state]"
+                class="form-control border-secondary border-end"
+                id="password"
+                formControlName="password"
+                placeholder="Password"
+                aria-describedby="passwordHelp"
+                autocomplete="current-password"
+                [tabindex]="tabindex"
+            /><!-- placeholder needed for floating label-->
+            <span class="input-group-text" type="button" id="basic-addon2" (click)="togglePwdState()">
+                <img src="assets/svg/{{pwdState.svg[pwdState.state]}}.svg"
+                    alt="{{pwdState.alt[pwdState.state]}}"
+                    title="{{pwdState.alt[pwdState.state]}}"/>
+            </span>
+            <label for="password">Password</label>
+            <div id="passwordHelp" class="form-text d-none">
+                Minimum 8 characters and at least one digit, one special character and one capital letter.
+            </div>
+            <div class="text-danger text-end col-12 my-3"
+                *ngIf="signUpForm.get('password')!.invalid && signUpForm.get('password')!.touched">
+                {{ getError('password') | json }}
+            </div>
+        </div>
+        <div class="mb-3 form-check">
             <input
                 type="checkbox"
-                class="form-check-input"
-                id="exampleCheck1"
+                class="no-validate form-check-input"
+                formControlName="mailing"
+                id="mailing"
+                [tabindex]="tabindex"
             />
-            <label class="form-check-label" for="exampleCheck1"
-                >Check me out</label
+            <label class="form-check-label text-black" for="mailing"
+                >Yes! I would like to receive by email special offers and updates about Lucasfilm Ltd.
+                and other products and services from
+                <a target="_blank" rel="noopener"
+                href="https://privacy.thewaltdisneycompany.com/en/definitions/#The-Walt-Disney-Family-of-Companies">
+                The Walt Disney Family of Companies</a></label
             >
-        </div> -->
-        <hr>
-        <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4" (click)="signUp()"
-                [class.disabled]="!signUpForm.valid">Continue</button>
-        <h6 ><strong>Star Wars is part of The Walt Disney Family of Companies.</strong></h6>
+        </div>
         <p class="text-secondary">
-            This email and password lets you seamlessly log into services and
-            experiences across The Walt Disney Family of Companies, such as
-            ESPN, Walt Disney World, Marvel, and more.
+            By creating an account, you agree to our Terms of Use, and acknowledge that you have read our Privacy Policy, Cookies Policy and UK & EU Privacy Rights
         </p>
-        <p class="text-secondary">
-            If you’ve used your email with one of our services, please use it
-            here too.
-        </p>
-        <img src="../../assets/img/logos-star-wars.webp" alt="Logos Compañias afines Star Wars" class="my-2">
+
+        <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4" [tabindex]="tabindex" (click)="signUp()"
+            [disabled]="!signUpForm.valid">Continue</button>
+
     </form>
 </div>
 <div class="modal-footer border-0 w-100">
@@ -102,12 +146,22 @@
         >
     </div>
 
-
-    <!-- <button
-        type="button"
-        class="btn btn-light"
-        (click)="activeModal.close('Close click')"
-    >
-        Close
-    </button> -->
 </div>
+<!-- Modal -->
+<ng-template #confirmation let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Sign Up</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<h2 *ngIf="signUpError">
+            The user {{user.email}} was already registered
+        </h2>
+        <h2 *ngIf="!signUpError">
+            You have been registered.
+        </h2>
+	</div>
+	<div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="modal.close()">Ok</button>
+	</div>
+</ng-template>

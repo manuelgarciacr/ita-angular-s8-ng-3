@@ -31,7 +31,7 @@
     />
 </div>
 <div class="modal-body mx-auto overflow-y-visible">
-    <form [formGroup]="loginForm" class=" was-validatedbg-light text-bg-light rounded-4 p-5">
+    <form [formGroup]="loginForm" class="was-validated bg-light text-bg-light rounded-4 p-5">
         <div class="mb-4">
             <h2><strong>Enter your email</strong></h2>
             <p>
@@ -47,7 +47,6 @@
                 formControlName="email"
                 placeholder="email"
                 aria-describedby="emailHelp"
-                tabindex="-1"
             /><!-- placeholder needed for floating label-->
             <label for="email">Email address</label>
             <div id="emailHelp" class="form-text d-none">
@@ -58,19 +57,33 @@
                 {{ getError('email') | json }}
             </div>
         </div>
-        <!-- <div class="mb-3 form-check">
+        <div class="form-floating input-group form-group mb-4">
             <input
-                type="checkbox"
-                class="form-check-input"
-                id="exampleCheck1"
-            />
-            <label class="form-check-label" for="exampleCheck1"
-                >Check me out</label
-            >
-        </div> -->
+                [attr.type]="pwdState.type[pwdState.state]"
+                class="form-control border-secondary border-end"
+                id="password"
+                formControlName="password"
+                placeholder="Password"
+                aria-describedby="passwordHelp"
+                autocomplete="current-password"
+            /><!-- placeholder needed for floating label-->
+            <span class="input-group-text" type="button" id="basic-addon2" (click)="togglePwdState()">
+                <img src="assets/svg/{{pwdState.svg[pwdState.state]}}.svg"
+                    alt="{{pwdState.alt[pwdState.state]}}"
+                    title="{{pwdState.alt[pwdState.state]}}"/>
+            </span>
+            <label for="password">Password</label>
+            <div id="passwordHelp" class="form-text d-none">
+                Minimum 8 characters and at least one digit, one special character and one capital letter.
+            </div>
+            <div class="text-danger text-end col-12 my-3"
+                *ngIf="loginForm.get('password')!.invalid && loginForm.get('password')!.touched">
+                {{ getError('password') | json }}
+            </div>
+        </div>
         <hr>
         <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4" (click)="login()"
-                [class.disabled]="!loginForm.valid">Continue</button>
+            [disabled]="!loginForm.valid">Continue</button>
         <h6 ><strong>Star Wars is part of The Walt Disney Family of Companies.</strong></h6>
         <p class="text-secondary">
             This email and password lets you seamlessly log into services and
@@ -98,12 +111,34 @@
         >
     </div>
 
-
-    <!-- <button
-        type="button"
-        class="btn btn-light"
-        (click)="activeModal.close('Close click')"
-    >
-        Close
-    </button> -->
 </div>
+<!-- Modal -->
+<ng-template #confirmation let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Sign Up</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<h2>
+            You are not registered, would you like to register?
+        </h2>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" (click)="modal.close('login')">No</button>
+        <button type="button" class="btn btn-success" ngbAutofocus (click)="modal.close('signup')">Yes</button>
+	</div>
+</ng-template>
+<ng-template #error let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title text-danger">ERROR</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<h2>
+            Invalid password
+        </h2>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="modal.close()">OK</button>
+	</div>
+</ng-template>
