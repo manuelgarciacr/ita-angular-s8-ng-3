@@ -92,3 +92,48 @@ export const StarWarsCrawl = [
         ]),
     ]),
 ];
+
+export const DarkSky = [
+    trigger('darkSky', [
+        state(
+            'closed',
+            //enforce your styles for closed state here
+            style({ opacity: 0 })
+        ),
+        state('open', style({ opacity: .5 })),
+        state('end', style({ opacity: 1 })),
+        transition('closed => open', [
+            query(':self', [
+                sequence([
+                    // Delay 86000ms + 2000ms
+                    animate('1ms 60000ms', style({})),
+                    animate('20000ms 0ms ease', style({ opacity: .5 })),
+                ]),
+            ]),
+        ]),
+    ]),
+];
+
+export const Planets = [
+    trigger('planets', [
+        state(
+            'closed',
+            //enforce your styles for closed state here
+            style({ transform: 'translateY(100%)' })
+        ),
+        state('open', style({ transform: 'translateY(0%)' })),
+        transition('closed => open', [
+            query(':self', [
+                sequence([
+                    // Delay 86000ms + 2000ms
+                    animate('1ms 65000ms', style({})),
+                    animate(
+                        '20000ms 0ms ease',
+                        style({ transform: 'translateY(0%)' })
+                    ),
+                ]),
+            ]),
+        ]),
+    ]),
+];
+

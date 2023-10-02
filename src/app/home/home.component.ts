@@ -4,6 +4,8 @@ import {
     ALongTime,
     StarWarsCrawl,
     StarWarsLogo,
+    DarkSky,
+    Planets
 } from '../route-animations';
 import { AnimationEvent } from '@angular/animations';
 
@@ -36,12 +38,14 @@ import { AnimationEvent } from '@angular/animations';
         `,
     ],
 
-    animations: [ALongTime, StarWarsLogo, StarWarsCrawl],
+    animations: [ALongTime, StarWarsLogo, StarWarsCrawl, DarkSky, Planets],
 })
 export class HomeComponent implements OnInit, OnDestroy {
     @HostBinding('@.disabled') public animationsDisabled = false;
     aLongTimeState = 'closed';
     starWarsLogoState = 'closed';
+    darkSkyState = 'closed';
+    planetsState = 'closed';
     private audio: HTMLAudioElement;
     audioOn: boolean | null = null;
 

@@ -82,4 +82,15 @@
             </p>
         </div>
     </div>
+
+    <div [@darkSky]="darkSkyState"
+        (@darkSky.done)="darkSkyState = 'open'"
+        style="background-image: url('../../assets/img/space600x400.webp'); background-size: cover; opacity: 0; z-index: -2"
+        class="position-absolute top-0 left-0 w-100 h-100"
+    ></div>
+
+    <div [@planets]="planetsState"
+        (@planets.done)="planetsState = 'open'"
+        style="background-image: url('../../assets/img/desktop-800x450.webp'); background-size: cover; ; z-index: -1"
+        class="position-absolute top-0 left-0 w-100 h-100"></div>
 </div>
