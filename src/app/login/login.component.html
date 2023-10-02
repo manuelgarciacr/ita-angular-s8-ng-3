@@ -1,0 +1,144 @@
+<div class="modal-header border-0">
+    <h4 class="modal-title"></h4>
+    <div
+        type="button"
+        class="fs-2 close-btn me-3"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-x-circle-fill"
+            viewBox="0 0 16 16"
+        >
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"
+            />
+        </svg>
+    </div>
+</div>
+<div class="col-4 offset-4 mb-3">
+    <img
+        src="../../assets/img/Star_Wars_Logo_white.svg"
+        width="180"
+        height="90"
+        class="d-block mx-auto"
+        priority
+        alt="Star Wars Logo"
+    />
+</div>
+<div class="modal-body mx-auto overflow-y-visible">
+    <form [formGroup]="loginForm" class="was-validated bg-light text-bg-light rounded-4 p-5">
+        <div class="mb-4">
+            <h2><strong>Enter your email</strong></h2>
+            <p>
+                Log into your Star Wars account. If you don't have one, you will
+                be prompted to create one.
+            </p>
+        </div>
+        <div class="form-floating mb-4">
+            <input
+                type="email"
+                class="form-control border-secondary"
+                id="email"
+                formControlName="email"
+                placeholder="email"
+                aria-describedby="emailHelp"
+            /><!-- placeholder needed for floating label-->
+            <label for="email">Email address</label>
+            <div id="emailHelp" class="form-text d-none">
+                We'll never share your email with anyone else.
+            </div>
+            <div class="text-danger text-end col-10 offset-1 col-sm-9 offset-sm-2 my-3"
+                *ngIf="loginForm.get('email')!.invalid && loginForm.get('email')!.touched">
+                {{ getError('email') | json }}
+            </div>
+        </div>
+        <div class="form-floating input-group form-group mb-4">
+            <input
+                [attr.type]="pwdState.type[pwdState.state]"
+                class="form-control border-secondary border-end"
+                id="password"
+                formControlName="password"
+                placeholder="Password"
+                aria-describedby="passwordHelp"
+                autocomplete="current-password"
+            /><!-- placeholder needed for floating label-->
+            <span class="input-group-text" type="button" id="basic-addon2" (click)="togglePwdState()">
+                <img src="assets/svg/{{pwdState.svg[pwdState.state]}}.svg"
+                    alt="{{pwdState.alt[pwdState.state]}}"
+                    title="{{pwdState.alt[pwdState.state]}}"/>
+            </span>
+            <label for="password">Password</label>
+            <div id="passwordHelp" class="form-text d-none">
+                Minimum 8 characters and at least one digit, one special character and one capital letter.
+            </div>
+            <div class="text-danger text-end col-12 my-3"
+                *ngIf="loginForm.get('password')!.invalid && loginForm.get('password')!.touched">
+                {{ getError('password') | json }}
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn rounded-5 w-100 mt-2 mb-4" (click)="login()"
+            [disabled]="!loginForm.valid">Continue</button>
+        <h6 ><strong>Star Wars is part of The Walt Disney Family of Companies.</strong></h6>
+        <p class="text-secondary">
+            This email and password lets you seamlessly log into services and
+            experiences across The Walt Disney Family of Companies, such as
+            ESPN, Walt Disney World, Marvel, and more.
+        </p>
+        <p class="text-secondary">
+            If you’ve used your email with one of our services, please use it
+            here too.
+        </p>
+        <img src="../../assets/img/logos-star-wars.webp" alt="Logos Compañias afines Star Wars" class="my-2">
+    </form>
+</div>
+<div class="modal-footer border-0 w-100">
+    <div class="float-end">
+        Foto de
+        <a
+            href="https://unsplash.com/es/@kaip?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+        >Kai Pilger</a
+        >
+        en
+        <a
+            href="https://unsplash.com/es/fotos/Ef6iL87-vOA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+            >Unsplash</a
+        >
+    </div>
+
+</div>
+<!-- Modal -->
+<ng-template #confirmation let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Sign Up</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<h2>
+            You are not registered, would you like to register?
+        </h2>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" (click)="modal.close('login')">No</button>
+        <button type="button" class="btn btn-success" ngbAutofocus (click)="modal.close('signup')">Yes</button>
+	</div>
+</ng-template>
+<ng-template #error let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title text-danger">ERROR</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<h2>
+            Invalid password
+        </h2>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="modal.close()">OK</button>
+	</div>
+</ng-template>
