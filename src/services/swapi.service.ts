@@ -118,11 +118,9 @@ export class SwapiService {
     }
 
     checkUrl(operation: string, endPoint: string, urlParm: string): boolean {
-        const isString = typeof urlParm == "string";
-        const lowerCase = isString ? urlParm.toLowerCase() : "";
-
-        const isOk =
-            isString && lowerCase.startsWith(this.url + "/" + endPoint);
+        const lowerCase = urlParm.toLowerCase();
+        const url = (this.url + "/" + endPoint).toLowerCase();
+        const isOk = lowerCase.startsWith(url);
 
         if (!isOk)
             console.log(
