@@ -111,7 +111,7 @@ export class SwapiService {
     // A custom method to check should retry a request or not
     shouldRetry(error: HttpErrorResponse) {
         if (error.status === 0) {
-            return timer(1000); // Adding a timer from RxJS to return observable to delay param.
+            return timer(1000); // Adding a timer from RxJS to return observable<0> to delay param.
         }
 
         throw error;
