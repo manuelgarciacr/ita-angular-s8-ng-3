@@ -28,7 +28,7 @@ const httpOptions = {
     providedIn: "root",
 })
 export class SwapiService {
-    url = "https://swapi.dev/api".toLowerCase();
+    url = "https://swapi.dev/api";
     private handleError: HandleError;
 
     constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
