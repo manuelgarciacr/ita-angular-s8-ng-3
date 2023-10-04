@@ -94,7 +94,10 @@
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": ["src/styles.scss"],
                         "scripts": [],
-                        "include": ["src/services/swapi.service.spec.ts"]
+                        "include": [
+                            "src/services/swapi.service.spec.ts",
+                            "src/app/starships/starships.component.spec.ts"
+                        ]
                     }
                 }
             }

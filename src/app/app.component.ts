@@ -38,23 +38,23 @@ export class AppComponent {
         private usersService: UsersService,
         private router: Router
     ) {
-        // this.usersService.signup({
-        //     email: "manuel.garcia.cr@hotmail.com",
-        //     firstName: "Manuel",
-        //     lastName: "García Criado",
-        //     password: "Anita@001",
-        //     mailing: true
-        // }).then(res => {
-        //     if (res != "login")
-        //         return true;
+        this.usersService.signup({
+            email: "manuel.garcia.cr@hotmail.com",
+            firstName: "Manuel",
+            lastName: "García Criado",
+            password: "Anita@001",
+            mailing: true
+        }).then(res => {
+            if (res != "login")
+                return true;
 
-        //     return this.usersService.login("manuel.garcia.cr@hotmail.com",
-        //         "Anita@001")
-        // }).then(res => {
-        //     console.log(this.router.url);
-        //     if (this.router.url == "/")
-        //         this.router.navigate(["starships"]);
-        // })
+            return this.usersService.login("manuel.garcia.cr@hotmail.com",
+                "Anita@001")
+        }).then(res => {
+            console.log(this.router.url);
+            if (this.router.url == "/")
+                this.router.navigate(["starships"]);
+        })
     }
 
     getRouteAnimationData(outlet: RouterOutlet) {
