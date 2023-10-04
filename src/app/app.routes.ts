@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -10,15 +11,16 @@ export const routes: Routes = [
     {
         path: 'starships',
         loadComponent: () =>
-            import('./starships/starships.component').then((c) => c.StarshipsComponent),
+            import('./starships/starships.component').then(
+                (c) => c.StarshipsComponent
+            ),
         data: { animation: 'isRight' },
+        canActivate: [authGuard],
     },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     {
         path: '**',
         loadComponent: () =>
-            import('./e404/e404.component').then(
-                (c) => c.E404Component
-            ),
+            import('./e404/e404.component').then((c) => c.E404Component),
     },
 ];

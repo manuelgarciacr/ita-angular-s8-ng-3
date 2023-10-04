@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IUser } from 'src/model/IUser';
 import * as bcrypt from 'bcryptjs';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UsersService {
-    private user: Subject<IUser | null> = new Subject();
+    private user = new BehaviorSubject<IUser | null>(null);
 
     constructor() {}
 
@@ -67,6 +67,10 @@ export class UsersService {
 
     getUser(): Subject<IUser | null> {
         return this.user;
+    }
+
+    isLoggedIn() {
+        return this.user.getValue() != null ;
     }
 
     private getDB(): IUser[] {
