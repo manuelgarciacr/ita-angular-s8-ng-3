@@ -105,47 +105,48 @@ export class LoginComponent implements OnInit {
 
         this.usersService.login(email, password).then((res) => {
             if (res == 'signup') {
-                //this.activeModal.close();
-                this.modalService
-                    .open(this.confirmationRef)
-                    .result.then(
-                        (result) => {
-                            if (result == 'signup') {
-                                const modalRef = this.modalService.open(
-                                    SignupComponent,
-                                    {
-                                        fullscreen: true,
-                                        windowClass: 'login-modal',
-                                    }
-                                );
-                                this.user.email =
-                                    this.loginForm.get('email')?.value;
-                                this.user.password =
-                                    this.loginForm.get('password')?.value;
-                                modalRef.componentInstance.user = this.user;
-                                this.activeModal.close();
-                            }
-                        },
-                        (reason) => {
-                            console.log(reason);
-                        }
-                    );
+                this.signUpConfirmation();
                 return;
             } else if (!res){
-                this.modalService
-                    .open(this.errorRef)
-                    .result.then(
-                        (result) => {
-                            console.log(result);
-
-                        },
-                        (reason) => {
-                            console.log(reason);
-                        }
-                    );
+                this.showError()
             }
             this.activeModal.close();
         });
+    }
+
+    signUpConfirmation(){
+        this.modalService.open(this.confirmationRef).result.then(
+            (result) => {
+                if (result == 'signup') {
+                    this.signUp();
+                }
+            },
+            (reason) => {
+                console.log(reason);
+            }
+        );
+    }
+
+    signUp() {
+        const modalRef = this.modalService.open(SignupComponent, {
+            fullscreen: true,
+            windowClass: 'login-modal',
+        });
+        this.user.email = this.loginForm.get('email')?.value;
+        this.user.password = this.loginForm.get('password')?.value;
+        modalRef.componentInstance.user = this.user;
+        this.activeModal.close();
+    }
+
+    showError() {
+        this.modalService.open(this.errorRef).result.then(
+            (result) => {
+                console.log(result);
+            },
+            (reason) => {
+                console.log(reason);
+            }
+        );
     }
 
     togglePwdState() {

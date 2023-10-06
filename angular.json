@@ -96,7 +96,8 @@
                         "scripts": [],
                         "include": [
                             "src/services/swapi.service.spec.ts",
-                            "src/app/starships/starships.component.spec.ts"
+                            "src/app/starships/starships.component.spec.ts",
+                            "src/app/starships/starship/starship.component.spec.ts"
                         ]
                     }
                 }

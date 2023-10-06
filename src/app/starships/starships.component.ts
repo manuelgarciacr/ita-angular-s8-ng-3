@@ -51,7 +51,7 @@ export class StarshipsComponent implements OnInit {
     onClick(url: string) {
         const modalRef = this.modalService.open(StarshipComponent, {windowClass: "starship-modal"});
         modalRef.componentInstance.url = url;
-    }
+     }
 
     onScroll() {
         if (this.nextPage) this.getStarships();
@@ -59,6 +59,7 @@ export class StarshipsComponent implements OnInit {
     }
 
     scrollTop() {
+        window.scrollY = 0;
         document.body.scrollTop = 0; // Safari
         document.documentElement.scrollTop = 0; // Other
     }

@@ -7,6 +7,9 @@ import { IStarship } from 'src/model/IStarship';
 import { ISwapiResp } from 'src/model/ISwapiResp';
 import { delay, of } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StarshipComponent } from './starship/starship.component';
 
 const starship = {
     name: "",
@@ -29,12 +32,8 @@ const starship = {
     url: "",
 };
 const expectedStarships01: IStarship[] = [
-    { ...starship, name: "A" },
-    { ...starship, name: "B" },
-];
-const expectedStarships02: IStarship[] = [
-    { ...starship, name: "C" },
-    { ...starship, name: "D" },
+    { ...starship, name: "A", url: "URL A" },
+    { ...starship, name: "B", url: "URL B"},
 ];
 const swapiResponse01: ISwapiResp = {
     count: 2,
@@ -42,36 +41,18 @@ const swapiResponse01: ISwapiResp = {
     previous: null,
     results: expectedStarships01,
 };
-const swapiResponse02: ISwapiResp = {
-    count: 2,
-    next: null,
-    previous: "https://swapi.dev/api/starships/?page=1",
-    results: expectedStarships02,
-};
-
 
 describe('StarshipsComponent', () => {
     let httpTestingController: HttpTestingController;
     let swapiService: SwapiService;
-    let comp: StarshipsComponent;
+    let modalService: NgbModal;
     let fixture: ComponentFixture<StarshipsComponent>;
-    const flushStarships = () => {
-        // SwapiService should have made one request to GET starships from expected URL
-        const req = httpTestingController.expectOne(
-            swapiService.url + "/starships"
-        );
-
-        expect(req.request.method).toEqual("GET");
-
-        // Respond with the mock starships response
-        req.flush(swapiResponse01);
-    };
+    let comp: StarshipsComponent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             // Import the HttpClient mocking services
             imports: [HttpClientTestingModule],
-            //providers: [SwapiService],
         });
 
         // Inject the test controller, swapiServer (DI), and
@@ -79,8 +60,8 @@ describe('StarshipsComponent', () => {
         // as they will be referenced by each test.
         httpTestingController = TestBed.inject(HttpTestingController);
         swapiService = TestBed.inject(SwapiService);
+        modalService = TestBed.inject(NgbModal);
         fixture = TestBed.createComponent(StarshipsComponent);
-        //fixture.detectChanges(); // Executes ngOnInit
         comp = fixture.componentInstance;
     });
 
@@ -89,21 +70,9 @@ describe('StarshipsComponent', () => {
         httpTestingController.verify();
     });
 
-    // beforeEach(() => {
-    //     TestBed.configureTestingModule({
-    //         imports: [StarshipsComponent],
-    //         providers: [{ provide: SwapiService, useClass: MockSwapiService }],
-    //     });
-    //     fixture = TestBed.createComponent(StarshipsComponent);
-    //     component = fixture.componentInstance;
-    //     swapiService = TestBed.inject(SwapiService);
-    //     fixture.detectChanges();
-    // });
-
     it('should create', () => {
         expect(comp).toBeTruthy();
-
-        //flushStarships()
+        expect(comp).toBeDefined();
     });
 
     it('Initial state', fakeAsync(() => {
@@ -117,36 +86,113 @@ describe('StarshipsComponent', () => {
                 )
             );
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expect((comp as any).nextPage)
-            .withContext("nextPage")
+            .withContext("nextPage property")
             .toBe(null); // Private property
-        expect(comp.starships).withContext("starships").toEqual([]);
-        expect(comp.showGoUpButton).withContext("showGoUpButton").toBe(false);
-        expect(comp.loading).withContext("loading").toBe(false);
+        expect(comp.starships).withContext('starships property').toEqual([]);
+        expect(comp.showGoUpButton)
+            .withContext('showGoUpButton property')
+            .toBe(false);
+        expect(comp.loading).withContext('loading property').toBe(false);
 
         // Run getStarships(), but swapiService has a 1ms delay
         comp.ngOnInit();
 
         // Due to the delay, the 'loading' switch is still set to true
-        expect(comp.loading).withContext("loading while").toBe(true);
+        expect(comp.loading).withContext('loading property while loading data').toBe(true);
 
         tick(1); //The 1ms delay ends. (fakeAsync)
         flush(); // Flushes all pending microtasks (fakeAsync)
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expect((comp as any).nextPage)
-            .withContext("nextPage after")
-            .toBe("https://swapi.dev/api/starships/?page=2"); // Private property
+            .withContext('nextPage property after loading data')
+            .toBe('https://swapi.dev/api/starships/?page=2'); // Private property
         expect(comp.starships)
-            .withContext("starships after")
+            .withContext('starships property after loading data')
             .toEqual(expectedStarships01);
         expect(comp.showGoUpButton)
-            .withContext("showGoUpButton after")
+            .withContext('showGoUpButton property after loading data')
             .toBe(false);
-        expect(comp.loading).withContext("loading after").toBe(false);
+        expect(comp.loading)
+            .withContext('loading property after loading data')
+            .toBe(false);
 
-        //comp.ngOnInit();
-
-        //flush();
-        //flushStarships();
     }))
+
+    it('click on the second spaceship card', fakeAsync(() => {
+        spyOn(swapiService, 'getStarshipsByUrl')
+            .withArgs(null)
+            .and.returnValue(
+                of(
+                    new HttpResponse<ISwapiResp>({ body: swapiResponse01 })
+                )
+            );
+
+        fixture.detectChanges();
+
+        const hostDe = fixture.debugElement;
+        const cardsDe = hostDe.queryAll(By.css('.card'));
+
+        expect(cardsDe?.length).withContext("Number of cards").toBe(2);
+
+        const cardDe = cardsDe![1];
+        const title = cardDe.query(By.css('h5.card-title')).nativeElement as HTMLElement;
+
+        expect(title.textContent)
+            .withContext('The starship name must be B')
+            .toContain('B');
+
+        modalService.activeInstances.subscribe((v) => {
+            const starship = v[0]?.componentInstance as StarshipComponent;
+
+            setTimeout(
+                () =>
+                    expect(starship.url)
+                        .withContext('Modal opened')
+                        .toBe('URL B'),
+                1000
+            );
+        });
+
+        cardDe.triggerEventHandler('click');
+
+        flush();
+    }))
+
+    it('cscrolling', fakeAsync(() => {
+        spyOn(swapiService, 'getStarshipsByUrl')
+            .withArgs(null)
+            .and.returnValue(
+                of(
+                    new HttpResponse<ISwapiResp>({ body: swapiResponse01 })
+                )
+            );
+
+        fixture.detectChanges();
+
+        expect(comp.showGoUpButton).withContext("The GoUp button should not be shown").toBe(false);
+
+        window.scrollY = 401;
+        comp.onWindowScroll()
+
+        expect(comp.showGoUpButton)
+            .withContext('The GoUp button should be shown')
+            .toBe(true);
+
+        window.scrollY = 199;
+        comp.onWindowScroll();
+
+        expect(comp.showGoUpButton)
+            .withContext('The GoUp button should not be shown')
+            .toBe(false);
+
+        comp.scrollTop()
+
+        expect(window.scrollY)
+            .withContext('User pressed GoUp button and scrolled up')
+            .toBe(0);
+    }))
+
 });
