@@ -1,11 +1,12 @@
-import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostBinding, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     ALongTime,
     StarWarsCrawl,
     StarWarsLogo,
     DarkSky,
-    Planets
+    Planets,
+    Crawl
 } from '../route-animations';
 import { AnimationEvent } from '@angular/animations';
 
@@ -14,7 +15,7 @@ import { AnimationEvent } from '@angular/animations';
     imports: [CommonModule],
     templateUrl: './home.component.html',
     styles: [
-        '.container {max-width: 1200px; height: calc(100vh - 175px); overflow: hidden;}',
+        '.container {max-width: 1200px; height: calc(100vh - 220px); overflow: hidden;}',
         ".container>p {color: #1bc8f8; font-family: 'Open Sans', sans-serif; font-size: 3.75rem }",
         `
             .d3d {
@@ -38,16 +39,23 @@ import { AnimationEvent } from '@angular/animations';
         `,
     ],
 
-    animations: [ALongTime, StarWarsLogo, StarWarsCrawl, DarkSky, Planets],
+    animations: [
+        ALongTime,
+        StarWarsLogo,
+        Crawl,
+        StarWarsCrawl,
+        DarkSky,
+        Planets,
+    ],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnDestroy {
     @HostBinding('@.disabled') public animationsDisabled = false;
-    aLongTimeState = 'closed';
-    starWarsLogoState = 'closed';
-    darkSkyState = 'closed';
-    planetsState = 'closed';
-    private audio: HTMLAudioElement;
-    audioOn: boolean | null = null;
+
+    protected audio: HTMLAudioElement;
+    animationState = 'none';
+    starWarsLogoState = 'none';
+    animating = false;
+    destroying = false;
 
     constructor() {
         this.audio = new Audio(
@@ -56,52 +64,44 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.audio.muted = false;
     }
 
-    ngOnInit(): void {
-        setTimeout(() => (this.starWarsLogoState = 'open'), 7200);
-        this.checkAudio().then((res) => (this.audioOn = res));
-    }
-
     ngOnDestroy(): void {
-        this.audio.load();
+        this.destroying = true;
+        this.audio.pause();
+        this.audio.remove();
     }
 
-    async checkAudio(): Promise<boolean | null> {
-        if (!this.audio.paused) return !this.audio.muted;
-
-        this.audio.volume = 0;
-        return this.audio
-            .play()
-            .then(() => {
-                this.audio.load();
-                return !this.audio.muted;
-            })
-            .catch((err) => {
-                console.log('checkAudio error:', err);
-                return null;
-            })
-            .finally(() => {
-                this.audio.volume = 1;
-            });
-    }
-
-    setAudio() {
-        if (this.audioOn == null) {
-            window.location.reload();
-        } else if (this.audioOn) {
-            this.audio.muted = true;
-            this.audioOn = false;
-        } else {
-            this.audio.muted = false;
-            this.audioOn = true;
+    animate() {
+        if (this.animating) {
+            this.audio.muted = !this.audio.muted;
+            return;
         }
+
+        this.animating = true;
+        this.animationState = 'closed';
+        this.starWarsLogoState = 'closed';
+
+        setTimeout(() => {
+            this.animationState = 'open';
+        }, 1);
+
+        setTimeout(() => (this.starWarsLogoState = 'open'), 7200);
     }
 
-    playAudio(event: AnimationEvent) {
+    animationEvent(event: AnimationEvent) {
+        console.log(event);
         if (event['triggerName'] == 'starWarsLogo') {
-            if (event['fromState'] == 'closed') {
+            if (event['fromState'] == 'closed' && !this.destroying) {
                 this.audio.load();
                 this.audio.play();
             }
         }
+        if (event['triggerName'] == 'aLongTime') {
+            if (event['fromState'] == 'closed') {
+                if (event['phaseName'] == 'done') {
+                    this.animating = false;
+                }
+            }
+        }
     }
 }
+

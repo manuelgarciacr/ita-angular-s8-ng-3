@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive, ChildrenOutletContexts, Router } from '@angular/router';
-import { homeAnimation } from './route-animations';
 import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptimizedImage } from '@angular/common';
 import { LoginComponent } from './login/login.component';
@@ -20,7 +19,6 @@ import { Subscription } from 'rxjs';
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    animations: [homeAnimation],
 })
 export class AppComponent {
     title = 'IT Academy Sprint 8';
@@ -50,7 +48,7 @@ export class AppComponent {
 
         //     return this.usersService.login("manuel.garcia.cr@hotmail.com",
         //         "Anita@001")
-        // }).then(res => {
+        // }).then(() => {
         //     console.log(this.router.url);
         //     if (this.router.url == "/")
         //         this.router.navigate(["starships"]);

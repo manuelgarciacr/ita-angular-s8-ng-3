@@ -1,10 +1,10 @@
 
-<header class="p-1 row w-100 justify-content-end align-items-center">
+<header class="p-1 row w-100 justify-content-around justify-content-sm-end align-items-center">
     <div class="col-4">
-        <img ngSrc="assets/img/Star_Wars_Logo_white.svg" width="180" height="90" class="d-block mx-auto" priority alt="Star Wars Logo">
+        <img ngSrc="assets/img/Star_Wars_Logo_white.svg" width="180" height="90" class="d-block mx-0 mx-sm-auto" priority alt="Star Wars Logo">
     </div>
-    <div class="col-4 text-end text-primary">
-        {{user?.firstName}}
+    <div class="col-4 text-end text-primary pe-0 pe-sm-3 me-n3 me-sm-0">
+        <span class="pe-3">{{user?.firstName}}</span>
         <a class="btn bg-black" (click)="openLogin()">LOG IN</a>
         <a class="btn bg-black">SEARCH</a>
         <a class="btn bg-black" [class.d-none]="user == null" (click)="logout()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -34,6 +34,7 @@
 	</div>
 </nav>
 
-<main [@homeTrigger]="getRouteAnimationData(outlet)">
+<!-- <main [@homeTrigger]="getRouteAnimationData(outlet)"> -->
+<main>
     <router-outlet #outlet="outlet"></router-outlet>
 </main>

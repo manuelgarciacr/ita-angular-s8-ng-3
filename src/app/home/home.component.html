@@ -1,33 +1,35 @@
 <div
     class="container d-flex flex-column justify-content-center align-items-center position-relative"
 >
-    <button class="position-absolute top-0 end-0 me-3"
-        (click)="setAudio()" type="button"
-        title="{{audioOn == null ? 'Play with Sound' : audioOn ? 'Sound Off' : 'Sound On'}}">
-        {{ audioOn == null ? "Play with Sound " : "" }}
-        <i class="bi bi-volume-up-fill"
-            [class.bi-volume-mute-fill]="audioOn"
-            [class.bi-volume-up-fill]="!audioOn"></i>
+    <button class="position-absolute top-0 end-0 me-3" (click)="animate()" type="button"
+        title="{{!animating ? 'Play Animation' : audio.muted ? 'Sound On' : 'Sound Off'}}">
+        {{ !animating ? "Play Animation " : "" }}
+        <i class="bi bi-volume-up-fill" [class.bi-volume-mute-fill]="!audio.muted && animating" [class.bi-volume-up-fill]="audio.muted || !animating"></i>
     </button>
 
     <p
-        [@aLongTime]="aLongTimeState"
-        (@aLongTime.done)="aLongTimeState = 'open'"
-        style="width: 0px"
+        [@aLongTime]="animationState"
+        (@aLongTime.done)="animationEvent($event)"
+        style="width: 75%; margin-top: 12%"
+        class="position-absolute top-0 left-0"
     >
         A long time ago in a galaxy far, far away....
     </p>
 
+    <!-- This animation is launched by a settimeout -->
+
     <img
         [@starWarsLogo]="starWarsLogoState"
-        (@starWarsLogo.start)="playAudio($event)"
+        (@starWarsLogo.start)="animationEvent($event)"
         src="../../assets/img/Star_Wars_Logo.svg"
         alt="Star Wars Logo"
         style="display: none;"
     />
 
-    <div class="d3d position-absolute">
-        <div [@starWarsCrawl]="'closed'" style="text-align: left; display: none">
+    <div class="d3d position-absolute"
+        [@crawl]="animationState">
+        <div [@starWarsCrawl]="animationState"
+            style="text-align: left;">
             <p  class="text-center">Episode IV</p>
             <p  class="text-center">A NEW HOPE</p>
             <p  style="color: transparent">BR</p>
@@ -83,14 +85,14 @@
         </div>
     </div>
 
-    <div [@darkSky]="darkSkyState"
-        (@darkSky.done)="darkSkyState = 'open'"
+    <div [@darkSky]="animationState"
+        (@darkSky.done)="animationState = 'open'"
         style="background-image: url('../../assets/img/space600x400.webp'); background-size: cover; opacity: 0; z-index: -2"
         class="position-absolute top-0 left-0 w-100 h-100"
     ></div>
 
-    <div [@planets]="planetsState"
-        (@planets.done)="planetsState = 'open'"
+    <div [@planets]="animationState"
+        (@planets.done)="animationState = 'open'"
         style="background-image: url('../../assets/img/desktop-800x450.webp'); background-size: cover; ; z-index: -1"
         class="position-absolute top-0 left-0 w-100 h-100"></div>
 </div>

@@ -22,6 +22,7 @@ const hideScrollHeight = 200;
                 visibility: visible;
             }
         `,
+        ".card {max-width: 1200px}"
     ],
 })
 export class StarshipsComponent implements OnInit {

@@ -31,13 +31,16 @@ $negative-spacers: if($enable-negative-margins, negativify-map($spacers), null);
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Serif&family=Roboto&family=Spline+Sans+Mono:wght@700&display=swap');
 
+.modal-fullscreen {
+    height: auto;
+}
 
 .login-modal {
     .modal-content {
         background-image: url('assets/img/kai-pilger-Ef6iL87-vOA-unsplash.webp');
         background-size: cover;
         .modal-body {
-            max-width: 580px;
+            max-width: 400px;
             input, .input-group-text {
                 background: lightgray;
                 color: black
@@ -68,6 +71,15 @@ $negative-spacers: if($enable-negative-margins, negativify-map($spacers), null);
     }
 }
 
+@include media-breakpoint-up(sm) {
+    .login-modal {
+        .modal-content {
+            .modal-body {
+                max-width: 580px;
+            }
+        }
+    }
+}
 // Tabs
 // .nav-tabs .nav-link {
 //     border: none;
@@ -118,10 +130,14 @@ body {
     }
 }
 
-.starship-modal .modal-dialog {
-    height: 80vh;
-    margin-top: 10vh;
-    max-width: 80vw;
+.starship-modal {
+
+    .modal-dialog {
+        height: 80vh;
+        margin-top: 10vh;
+        max-width: 80vw;
+        max-width: 1200px;
+    }
 }
 
 ////////////////////////
